@@ -11,7 +11,7 @@ func main() {
 	// create new instance of beeminder client
 	// have client retrieve user info
 	// print user info
-	key := "esscExJrXbJ4Y2xhZ4JL"
+	key := ""
 	client := beeminder.NewClient("https://www.beeminder.com/api/v1", key)
 	var diff int64 = 1721303299
 	params := beeminder.GetUserParams{
@@ -24,4 +24,9 @@ func main() {
 		fmt.Println(err)
 	}
 	fmt.Printf("%+v", res)
+
+	// query notion DB
+	// retrieve each page
+	// find data block
+	// print data block
 }
