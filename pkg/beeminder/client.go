@@ -16,37 +16,6 @@ type Client struct {
 	HTTPClient *http.Client
 }
 
-// User represents a Beeminder user
-type User struct {
-	Username     string        `json:"username"`
-	Timezone     string        `json:"timezone"`
-	UpdatedAt    int64         `json:"updated_at"`
-	Goals        []interface{} `json:"goals"` // Can be []string or []Goal depending on parameters
-	Deadbeat     bool          `json:"deadbeat"`
-	UrgencyLoad  float64       `json:"urgency_load"`
-	DeletedGoals []struct {
-		ID string `json:"id"`
-	} `json:"deleted_goals,omitempty"`
-}
-
-// Goal represents a Beeminder goal
-type Goal struct {
-	Slug        string `json:"slug"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	// Add other goal fields as needed
-	Datapoints    []Datapoint `json:"datapoints,omitempty"`
-	LastDatapoint *Datapoint  `json:"last_datapoint,omitempty"`
-}
-
-// Datapoint represents a Beeminder datapoint
-type Datapoint struct {
-	Timestamp int64   `json:"timestamp"`
-	Value     float64 `json:"value"`
-	Comment   string  `json:"comment"`
-	ID        string  `json:"id"`
-}
-
 // NewClient creates a new Beeminder API client
 func NewClient(baseURL, authToken string) *Client {
 	return &Client{
@@ -58,15 +27,6 @@ func NewClient(baseURL, authToken string) *Client {
 	}
 }
 
-// GetUserParams represents the parameters for the GetUser method
-type GetUserParams struct {
-	Username        string
-	Associations    bool
-	DiffSince       *int64
-	Skinny          bool
-	DatapointsCount *int64
-}
-
 // GetUser retrieves information about a user
 func (c *Client) GetUser(params GetUserParams) (*User, error) {
 	baseURL := fmt.Sprintf("%s/users/%s.json", c.BaseURL, params.Username)
@@ -76,6 +36,8 @@ func (c *Client) GetUser(params GetUserParams) (*User, error) {
 
 	if params.Associations {
 		query.Set("associations", "true")
+	} else {
+		query.Set("associations", "true") // always true while User.Goals is a []Goal
 	}
 
 	if params.DiffSince != nil {
