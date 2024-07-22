@@ -1,5 +1,9 @@
 package beeminder
 
+// ============================== //
+// ======== BEEMINDER API ======= //
+// ============================== //
+
 // User represents a Beeminder user
 type User struct {
 	Username     string  `json:"username"`
@@ -39,6 +43,7 @@ type Goal struct {
 	Contract        Contract        `json:"contract"`
 	Delta           float64         `json:"delta"`
 	DeltaText       string          `json:"delta_text"`
+	SafeBuf         int64           `json:"safebuf"`
 	SafeBump        float64         `json:"safebump"`
 	Curval          float64         `json:"curval"`
 	Lastday         int64           `json:"lastday"`
@@ -93,3 +98,7 @@ type GetUserParams struct {
 	Skinny          bool
 	DatapointsCount *int64
 }
+
+// ============================== //
+// ========= NOTION API ========= //
+// ============================== //
